@@ -31,6 +31,22 @@ SR_PRIV struct soft_trigger_logic *soft_trigger_logic_new(
 {
 	struct soft_trigger_logic *stl;
 
+	/* Ensure we have at least one pre-trigger sample when triggering on edge
+	 * so that we actually grab the edge itself. */
+	if (pre_trigger_samples <= 0) {
+		struct sr_trigger_stage *stage = g_slist_last(trigger->stages)->data;
+		GSList *l;
+		for (l = stage->matches; l; l = l->next) {
+			struct sr_trigger_match *match = l->data;
+			if (match->match == SR_TRIGGER_RISING ||
+			    match->match == SR_TRIGGER_FALLING ||
+			    match->match == SR_TRIGGER_EDGE) {
+				pre_trigger_samples = 1;
+				break;
+			}
+		}
+	}
+
 	stl = g_malloc0(sizeof(struct soft_trigger_logic));
 	stl->sdi = sdi;
 	stl->trigger = trigger;

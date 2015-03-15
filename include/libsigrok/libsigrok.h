@@ -888,6 +888,9 @@ enum sr_configkey {
 	/** Equivalent circuit model. */
 	SR_CONF_EQUIV_CIRCUIT_MODEL,
 
+	/** Over-temperature protection (OTP) active */
+	SR_CONF_OVER_TEMPERATURE_PROTECTION_ACTIVE,
+
 	/*--- Special stuff -------------------------------------------------*/
 
 	/** Scan options supported by the driver. */
